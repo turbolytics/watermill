@@ -11,7 +11,7 @@ Exempt cells are excused by a passing proof. Regenerate with `temper matrix`.
 
 | covered | exempt | failing | missing | unenforced |
 | ---: | ---: | ---: | ---: | ---: |
-| 205 | 0 | 2 | 184 | 50 |
+| 205 | 0 | 2 | 183 | 51 |
 
 ## Features
 
@@ -423,7 +423,7 @@ Every capability a Pub/Sub declares in tests.Features (pubsub/tests/test_pubsub.
 | `consumer_groups` | ✅ | ✅ | ⬜ | ⏳ | ✅ | ⏳ | ✅ | ⏳ | ⬜ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `exactly_once` | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ✅ | ⏳ | ⬜ | ⬜ | ⏳ | ✅ | ⏳ | ✅ | ✅ | ⏳ |
 | `guaranteed_order` | ✅ | ⬜ | ✅ | ⏳ | ⏳ | ⏳ | ⬜ | ⬜ | ⬜ | ✅ | ✅ | ⏳ | ✅ | ✅ | ✅ |
-| `guaranteed_order_single_subscriber` | ✅ | ⬜ | ⬜ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⬜ | ⏳ | ✅ | ⬜ | ⏳ | ⬜ | ✅ |
+| `guaranteed_order_single_subscriber` | ✅ | ⬜ | ⬜ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⬜ | ⏳ | ✅ | ⬜ | ⏳ | ⏳ | ✅ |
 | `persistent` | ✅ | ✅ | ✅ | ✅ | ✅ | ⏳ | ❌ | ⏳ | ⬜ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `new_subscriber_receives_old_messages` | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⬜ | ✅ | ✅ | ✅ | ⏳ | ⏳ | ⏳ |
 | `context_preserved` | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ✅ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ |

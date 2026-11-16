@@ -16,7 +16,7 @@ pubsub.features/consumer_groups: {ci: covered, outside_ci: not_required}
 pubsub.features/context_preserved: {ci: unenforced, outside_ci: not_required}
 pubsub.features/exactly_once: {ci: covered, outside_ci: not_required}
 pubsub.features/guaranteed_order: {ci: covered, outside_ci: not_required}
-pubsub.features/guaranteed_order_single_subscriber: {ci: missing, outside_ci: not_required}
+pubsub.features/guaranteed_order_single_subscriber: {ci: unenforced, outside_ci: not_required}
 pubsub.features/new_subscriber_receives_old_messages: {ci: unenforced, outside_ci: not_required}
 pubsub.features/persistent: {ci: covered, outside_ci: not_required}
 router.handler_result_acks_or_nacks: {ci: missing, outside_ci: not_required}
