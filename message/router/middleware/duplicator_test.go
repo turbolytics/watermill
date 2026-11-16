@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"errors"
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,6 +16,7 @@ var (
 )
 
 func TestDuplicator(t *testing.T) {
+	temper.Covers(t, "middleware.duplicator")
 	var executionsCount int
 	producedMessages, err := middleware.Duplicator(func(msg *message.Message) ([]*message.Message, error) {
 		executionsCount++

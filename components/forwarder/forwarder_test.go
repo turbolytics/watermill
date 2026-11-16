@@ -2,6 +2,7 @@ package forwarder_test
 
 import (
 	"context"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -22,6 +23,7 @@ var (
 )
 
 func TestForwarder(t *testing.T) {
+	temper.Covers(t, "component.forwarder")
 	suite.Run(t, new(ForwarderSuite))
 }
 

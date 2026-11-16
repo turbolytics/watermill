@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"context"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 )
 
 func TestRetry_retry(t *testing.T) {
+	temper.Covers(t, "middleware.retry")
 	retry := middleware.Retry{
 		MaxRetries: 1,
 	}
@@ -39,6 +41,7 @@ func TestRetry_retry(t *testing.T) {
 }
 
 func TestRetry_max_retries(t *testing.T) {
+	temper.Covers(t, "middleware.retry")
 	retry := middleware.Retry{
 		MaxRetries: 1,
 		Logger:     watermill.NewStdLogger(true, true),

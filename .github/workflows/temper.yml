@@ -1,0 +1,123 @@
+name: temper
+# Builds the Temper matrix: every documented guarantee against every Pub/Sub.
+#
+# Each Pub/Sub repository runs the universal suite in pubsub/tests. The suite
+# states what each test proves (pubsub/tests/temper_claims.go), so running a
+# repository's tests against this checkout of watermill, under `temper run`,
+# writes evidence for that Pub/Sub. The last job joins the evidence with the
+# declarations in temper/ and writes MATRIX.md.
+#
+# It runs nightly and on demand, not on every pull request, because it starts
+# every Pub/Sub's brokers.
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+env:
+  TEMPER_VERSION: v0.1.1
+
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.26'
+      - run: go install github.com/turbolytics/temper/cmd/temper@${{ env.TEMPER_VERSION }}
+      - name: Test GoChannel, the Router, middlewares and components
+        run: TEMPER_SUBJECT=pubsub.gochannel temper run --level ci -- go test ./...
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence-core
+          path: .temper/evidence
+          include-hidden-files: true
+
+  pubsub:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {repo: watermill-amqp, subject: pubsub.amqp, dir: ., test: "go test -parallel 20 ./..."}
+          - {repo: watermill-aws, subject: pubsub.aws.sns, dir: ., test: "go test ./sns/..."}
+          - {repo: watermill-aws, subject: pubsub.aws.sqs, dir: ., test: "go test ./sqs/..."}
+          - {repo: watermill-bolt, subject: pubsub.bolt, dir: ., test: "go test -race ./..."}
+          - {repo: watermill-firestore, subject: pubsub.firestore, dir: ., test: "go test -parallel 20 ./..."}
+          - {repo: watermill-googlecloud, subject: pubsub.googlecloud, dir: ., test: "go test ./..."}
+          - {repo: watermill-http, subject: pubsub.http, dir: ., test: "go test -parallel 20 ./..."}
+          - {repo: watermill-kafka, subject: pubsub.kafka, dir: ., test: "go test ./..."}
+          - {repo: watermill-nats, subject: pubsub.nats, dir: ., test: "go test -parallel 20 ./pkg/nats..."}
+          - {repo: watermill-nats, subject: pubsub.jetstream, dir: ., test: "go test -parallel 20 ./pkg/jetstream..."}
+          - {repo: watermill-redisstream, subject: pubsub.redisstream, dir: ., test: "go test ./..."}
+          - {repo: watermill-sql, subject: "", dir: ., test: "go test -timeout=30m ./...",
+             subject_map: "TestMySQL=pubsub.sql.mysql,TestPostgreSQL=pubsub.sql.postgres,TestPgx=pubsub.sql.postgres"}
+          - {repo: watermill-sqlite, subject: pubsub.sqlite, dir: wmsqlitezombiezen, test: "go test -timeout=30m ./..."}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: watermill
+      - uses: actions/checkout@v4
+        with:
+          repository: ThreeDotsLabs/${{ matrix.repo }}
+          path: pubsub
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.26'
+      - run: go install github.com/turbolytics/temper/cmd/temper@${{ env.TEMPER_VERSION }}
+      - name: Start the brokers
+        working-directory: pubsub
+        run: |
+          cat .env >> $GITHUB_ENV || true
+          if grep -q '^up:' Makefile; then make up; fi
+          if grep -q '^wait:' Makefile; then make wait; fi
+      - name: Use this checkout of watermill
+        working-directory: pubsub/${{ matrix.dir }}
+        run: |
+          go mod edit -replace github.com/ThreeDotsLabs/watermill=${{ github.workspace }}/watermill
+          go mod tidy
+      - name: Run the tests through Temper
+        working-directory: pubsub/${{ matrix.dir }}
+        continue-on-error: true
+        env:
+          TEMPER_SUBJECT: ${{ matrix.subject }}
+          TEMPER_SUBJECT_MAP: ${{ matrix.subject_map }}
+        run: temper --root ${{ github.workspace }}/watermill run --level ci -- ${{ matrix.test }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence-${{ matrix.repo }}-${{ strategy.job-index }}
+          path: watermill/.temper/evidence
+          include-hidden-files: true
+
+  matrix:
+    needs: [core, pubsub]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '^1.26'
+      - run: go install github.com/turbolytics/temper/cmd/temper@${{ env.TEMPER_VERSION }}
+      - uses: actions/download-artifact@v4
+        with:
+          path: .temper/evidence
+          pattern: evidence-*
+          merge-multiple: true
+      - name: Build the matrix
+        run: |
+          set +e
+          temper matrix --all-levels > summary.txt 2>&1
+          code=$?
+          { echo '### Temper'; echo; echo '```'; cat summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit $code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: temper-matrix
+          path: |
+            MATRIX.md
+            temper/status/

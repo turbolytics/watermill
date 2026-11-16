@@ -1,0 +1,12 @@
+id: pubsub.http
+kind: pubsub
+feature: pubsub.http
+answers:
+  pubsub.features:
+    consumer_groups: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    exactly_once: supported
+    guaranteed_order: supported
+    guaranteed_order_single_subscriber: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    persistent: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    new_subscriber_receives_old_messages: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    context_preserved: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}

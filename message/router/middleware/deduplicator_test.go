@@ -3,6 +3,7 @@ package middleware_test
 import (
 	"context"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 )
 
 func TestDeduplicatorMiddleware(t *testing.T) {
+	temper.Covers(t, "middleware.deduplicator")
 	t.Parallel()
 
 	count := 0

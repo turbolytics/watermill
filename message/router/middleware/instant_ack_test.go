@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/ThreeDotsLabs/watermill/message"
@@ -9,6 +10,7 @@ import (
 )
 
 func TestInstantAck(t *testing.T) {
+	temper.Covers(t, "middleware.instant_ack")
 	producedMessages := message.Messages{message.NewMessage("2", nil)}
 	producedErr := errors.New("foo")
 

@@ -1,0 +1,12 @@
+id: pubsub.amqp
+kind: pubsub
+feature: pubsub.amqp
+answers:
+  pubsub.features:
+    consumer_groups: supported
+    exactly_once: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    guaranteed_order: supported
+    guaranteed_order_single_subscriber: supported
+    persistent: supported
+    new_subscriber_receives_old_messages: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}
+    context_preserved: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}

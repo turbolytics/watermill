@@ -1,6 +1,7 @@
 package middleware_test
 
 import (
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/pkg/errors"
@@ -13,6 +14,7 @@ import (
 )
 
 func TestCorrelationID(t *testing.T) {
+	temper.Covers(t, "middleware.correlation")
 	handlerErr := errors.New("foo")
 
 	handler := middleware.CorrelationID(func(msg *message.Message) ([]*message.Message, error) {

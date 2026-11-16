@@ -1,0 +1,8 @@
+temper: "0.1"
+project: watermill
+
+levels:
+  - name: ci
+    description: the commands the shared tests.yml workflow runs in each repository (make test)
+  - name: outside_ci
+    description: tests that exist but no CI workflow runs, such as -tags=reconnect and NATS JetStream's suite

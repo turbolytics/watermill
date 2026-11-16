@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"context"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -19,6 +20,7 @@ const (
 )
 
 func TestThrottle_Middleware(t *testing.T) {
+	temper.Covers(t, "middleware.throttle")
 	throttle := middleware.NewThrottle(perSecond, testTimeout)
 
 	ctx, cancel := context.WithTimeout(context.Background(), testTimeout)

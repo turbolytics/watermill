@@ -1,0 +1,111 @@
+# What watermill's docs and package docs say it does.
+features:
+  - id: message.ack_nack
+    description: "Ack and Nack are idempotent and exclude each other (message/message.go)."
+    requires: [ci]
+  - id: router
+    description: "The Router acks a message when its handler returns nil, nacks it on an error, and closes gracefully (message/router.go)."
+    requires: [ci]
+  - id: middleware.retry
+    description: "Retry retries a failing handler with backoff, then gives up."
+    requires: [ci]
+  - id: middleware.poison_queue
+    description: "PoisonQueue publishes an unprocessable message to a separate topic, and the chain continues."
+    requires: [ci]
+  - id: middleware.recoverer
+    description: "Recoverer turns a panic in a handler into an error."
+    requires: [ci]
+  - id: middleware.timeout
+    description: "Timeout cancels the message context after a deadline."
+    requires: [ci]
+  - id: middleware.throttle
+    description: "Throttle limits how many messages a handler processes per unit of time."
+    requires: [ci]
+  - id: middleware.circuit_breaker
+    description: "CircuitBreaker fails fast when a handler keeps returning errors."
+    requires: [ci]
+  - id: middleware.deduplicator
+    description: "Deduplicator drops a message it has already processed within a time window."
+    requires: [ci]
+  - id: middleware.instant_ack
+    description: "InstantAck acks a message as soon as it arrives, regardless of errors."
+    requires: [ci]
+  - id: middleware.correlation
+    description: "CorrelationID propagates a correlation ID from a consumed message to the messages it produces."
+    requires: [ci]
+  - id: middleware.ignore_errors
+    description: "IgnoreErrors treats listed errors as success."
+    requires: [ci]
+  - id: middleware.delay_on_error
+    description: "DelayOnError sets delay metadata on a message whose handler failed."
+    requires: [ci]
+  - id: middleware.duplicator
+    description: "Duplicator processes each message twice, to check that a handler is idempotent."
+    requires: [ci]
+  - id: component.cqrs
+    description: "CQRS command and event buses route commands and events to handlers."
+    requires: [ci]
+  - id: component.forwarder
+    description: "Forwarder publishes messages stored in one Pub/Sub (an outbox) to another."
+    requires: [ci]
+  - id: component.requeuer
+    description: "Requeuer moves messages from one topic back to another, for example from a poison queue."
+    requires: [ci]
+  - id: component.delay
+    description: "The delay component publishes and consumes delayed messages."
+    requires: [ci]
+  - id: component.fanin
+    description: "FanIn merges several topics into one."
+    requires: [ci]
+  - id: component.requestreply
+    description: "Request-reply sends a command and waits for its reply."
+    requires: [ci]
+  - id: component.metrics
+    description: "Metrics exposes Prometheus metrics for the Router and Pub/Subs."
+    requires: [ci]
+  # One feature per Pub/Sub. The universal suite proves each one.
+  - id: pubsub.gochannel
+    description: "GoChannel, the in-memory Pub/Sub in watermill core."
+    requires: [ci]
+  - id: pubsub.kafka
+    description: "Kafka (watermill-kafka)."
+    requires: [ci]
+  - id: pubsub.amqp
+    description: "RabbitMQ over AMQP (watermill-amqp)."
+    requires: [ci]
+  - id: pubsub.nats
+    description: "NATS core with streaming (watermill-nats, pkg/nats)."
+    requires: [ci]
+  - id: pubsub.jetstream
+    description: "NATS JetStream (watermill-nats, pkg/jetstream)."
+    requires: [ci]
+  - id: pubsub.sql.postgres
+    description: "PostgreSQL (watermill-sql)."
+    requires: [ci]
+  - id: pubsub.sql.mysql
+    description: "MySQL (watermill-sql)."
+    requires: [ci]
+  - id: pubsub.sqlite
+    description: "SQLite (watermill-sqlite)."
+    requires: [ci]
+  - id: pubsub.redisstream
+    description: "Redis Streams (watermill-redisstream)."
+    requires: [ci]
+  - id: pubsub.googlecloud
+    description: "Google Cloud Pub/Sub (watermill-googlecloud)."
+    requires: [ci]
+  - id: pubsub.firestore
+    description: "Firestore (watermill-firestore)."
+    requires: [ci]
+  - id: pubsub.aws.sns
+    description: "AWS SNS (watermill-aws, sns)."
+    requires: [ci]
+  - id: pubsub.aws.sqs
+    description: "AWS SQS (watermill-aws, sqs)."
+    requires: [ci]
+  - id: pubsub.bolt
+    description: "BoltDB (watermill-bolt)."
+    requires: [ci]
+  - id: pubsub.http
+    description: "HTTP (watermill-http)."
+    requires: [ci]

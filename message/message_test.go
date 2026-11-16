@@ -2,6 +2,7 @@ package message_test
 
 import (
 	"context"
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/ThreeDotsLabs/watermill/message"
@@ -65,6 +66,7 @@ func TestMessage_Ack(t *testing.T) {
 }
 
 func TestMessage_Ack_idempotent(t *testing.T) {
+	temper.Covers(t, "message.ack_nack")
 	msg := &message.Message{}
 	require.True(t, msg.Ack())
 	require.True(t, msg.Ack())
@@ -73,6 +75,7 @@ func TestMessage_Ack_idempotent(t *testing.T) {
 }
 
 func TestMessage_Ack_already_Nack(t *testing.T) {
+	temper.Covers(t, "message.ack_nack")
 	msg := &message.Message{}
 	require.True(t, msg.Nack())
 
@@ -88,6 +91,7 @@ func TestMessage_Nack(t *testing.T) {
 }
 
 func TestMessage_Nack_idempotent(t *testing.T) {
+	temper.Covers(t, "message.ack_nack")
 	msg := &message.Message{}
 	require.True(t, msg.Nack())
 	require.True(t, msg.Nack())
@@ -96,6 +100,7 @@ func TestMessage_Nack_idempotent(t *testing.T) {
 }
 
 func TestMessage_Nack_already_Ack(t *testing.T) {
+	temper.Covers(t, "message.ack_nack")
 	msg := &message.Message{}
 	require.True(t, msg.Ack())
 

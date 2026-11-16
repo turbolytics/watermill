@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"errors"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 )
 
 func TestDelayOnError(t *testing.T) {
+	temper.Covers(t, "middleware.delay_on_error")
 	m := middleware.DelayOnError{
 		InitialInterval: time.Second,
 		MaxInterval:     time.Second * 10,

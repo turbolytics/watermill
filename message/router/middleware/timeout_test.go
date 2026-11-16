@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"errors"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 )
 
 func TestTimeout(t *testing.T) {
+	temper.Covers(t, "middleware.timeout")
 	timeout := middleware.Timeout(time.Millisecond * 10)
 
 	h := timeout(func(msg *message.Message) ([]*message.Message, error) {

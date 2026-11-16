@@ -1,0 +1,122 @@
+# Guarantees every Pub/Sub must hold, from watermill's docs, the Publisher and
+# Subscriber interfaces, the Router, and the universal test suite.
+invariants:
+  - id: delivery.at_least_once
+    claim: "Every published message is delivered at least once (docs: at-least-once delivery)."
+    applies_to: pubsub
+    family: delivery
+    requires: [ci]
+
+  - id: delivery.concurrent_subscribers
+    claim: "Concurrent subscribers, on one or several topics, each receive their messages."
+    applies_to: pubsub
+    family: delivery
+    requires: [ci]
+
+  - id: delivery.topics_isolated
+    claim: "A subscriber receives only the messages of its own topic."
+    applies_to: pubsub
+    family: delivery
+    requires: [ci]
+
+  - id: delivery.no_loss_across_restart
+    claim: "No published message is lost when the broker restarts (tests.TestReconnect)."
+    applies_to: pubsub
+    family: delivery
+    requires: [ci]
+
+  - id: ack.nack_redelivers
+    claim: "A nacked message is redelivered (Subscriber interface)."
+    applies_to: pubsub
+    family: ack
+    requires: [ci]
+
+  - id: ack.next_only_after_ack
+    claim: "The next message is delivered only after the current one is acked (Subscriber interface)."
+    applies_to: pubsub
+    family: ack
+    requires: [ci]
+
+  - id: ack.ack_cancels_message_context
+    claim: "Ack or Nack cancels the message's context (Subscriber interface)."
+    applies_to: pubsub
+    family: ack
+    requires: [ci]
+
+  - id: ack.broker_ack_after_watermill_ack
+    claim: "The ack or offset reaches the broker only after the Watermill message is acked (docs: must)."
+    applies_to: pubsub
+    family: ack
+    requires: [ci]
+
+  - id: ack.unacked_redelivered_after_timeout
+    claim: "A message that is never acked or nacked is redelivered after the backend's ack timeout."
+    applies_to: pubsub
+    family: ack
+    requires: [ci]
+
+  - id: handling.continues_after_errors
+    claim: "Consuming continues after a handler fails."
+    applies_to: pubsub
+    family: handling
+    requires: [ci]
+
+  - id: shutdown.subscriber_close_keeps_offsets
+    claim: "After a subscriber closes, a new subscriber continues where it stopped (Close flushes offsets)."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: shutdown.concurrent_close_safe
+    claim: "Closing subscribers concurrently while they consume is safe."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: shutdown.subscribe_ctx_cancel_closes
+    claim: "Canceling the Subscribe context closes the subscription and its channel."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: shutdown.publisher_close_flushes
+    claim: "Publisher Close flushes unsent messages."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: shutdown.router_waits_for_inflight
+    claim: "Router Close waits for in-flight handlers, up to CloseTimeout, on this Pub/Sub."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: shutdown.inflight_ack_reaches_broker
+    claim: "The ack of a message in flight during shutdown reaches the broker before shutdown completes."
+    applies_to: pubsub
+    family: shutdown
+    requires: [ci]
+
+  - id: groups.handover_on_member_crash
+    claim: "When a consumer crashes, its unacked messages are delivered to another consumer."
+    applies_to: pubsub
+    family: groups
+    requires: [ci]
+
+  - id: groups.no_duplicate_processing_after_rebalance
+    claim: "After a rebalance, no message is processed by two consumers at once."
+    applies_to: pubsub
+    family: groups
+    requires: [ci]
+
+  - id: router.handler_result_acks_or_nacks
+    claim: "On this Pub/Sub, the Router acks a message when its handler returns nil and nacks it on an error."
+    applies_to: pubsub
+    family: router
+    requires: [ci]
+
+  - id: router.panic_nacks
+    claim: "On this Pub/Sub, a panic in a handler nacks the message."
+    applies_to: pubsub
+    family: router
+    requires: [ci]

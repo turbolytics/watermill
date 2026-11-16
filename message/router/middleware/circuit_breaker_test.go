@@ -2,6 +2,7 @@ package middleware_test
 
 import (
 	"errors"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 )
 
 func TestCircuitBreaker(t *testing.T) {
+	temper.Covers(t, "middleware.circuit_breaker")
 	t.Parallel()
 
 	count := 0

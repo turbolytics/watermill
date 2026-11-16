@@ -3,6 +3,7 @@ package fanin_test
 import (
 	"context"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"sync"
 	"testing"
 	"time"
@@ -16,6 +17,7 @@ import (
 )
 
 func TestFanIn(t *testing.T) {
+	temper.Covers(t, "component.fanin")
 	const (
 		upstreamTopicPattern = "upstream-topic-%d"
 		downstreamTopic      = "downstream-topic"

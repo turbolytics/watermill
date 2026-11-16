@@ -3,6 +3,7 @@ package message_test
 import (
 	"context"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"sync"
 	"testing"
 	"time"
@@ -120,6 +121,8 @@ func TestRouter_functional(t *testing.T) {
 }
 
 func TestRouter_functional_nack(t *testing.T) {
+	temper.Covers(t, "router")
+	temper.Covers(t, "router.handler_result_acks_or_nacks", temper.Subject("pubsub.gochannel"))
 	pub, sub := createPubSub()
 	defer func() {
 		assert.NoError(t, pub.Close())
@@ -170,6 +173,7 @@ func TestRouter_functional_nack(t *testing.T) {
 }
 
 func TestRouter_ack_on_publishing_success(t *testing.T) {
+	temper.Covers(t, "router")
 	publisher := &failingPublisherMock{
 		shouldPanic: false,
 		shouldError: false,
@@ -218,6 +222,7 @@ func TestRouter_ack_on_publishing_success(t *testing.T) {
 }
 
 func TestRouter_nack_on_publishing_failure(t *testing.T) {
+	temper.Covers(t, "router")
 	publisher := &failingPublisherMock{
 		shouldPanic: false,
 		shouldError: true,
@@ -266,6 +271,7 @@ func TestRouter_nack_on_publishing_failure(t *testing.T) {
 }
 
 func TestRouter_nack_on_panic(t *testing.T) {
+	temper.Covers(t, "router")
 	publisher := &failingPublisherMock{
 		shouldPanic: true,
 		shouldError: false,
@@ -314,6 +320,7 @@ func TestRouter_nack_on_panic(t *testing.T) {
 }
 
 func TestRouter_nack_on_handler_failure(t *testing.T) {
+	temper.Covers(t, "router")
 	publisher := &failingPublisherMock{
 		shouldPanic: false,
 		shouldError: false,
@@ -615,6 +622,7 @@ func TestRouter_AddMiddleware_to_handler_many(t *testing.T) {
 }
 
 func TestRouter_RunHandlers(t *testing.T) {
+	temper.Covers(t, "router")
 	ctx := context.Background()
 
 	testID := watermill.NewUUID()
@@ -679,6 +687,7 @@ func TestRouter_RunHandlers(t *testing.T) {
 }
 
 func TestRouter_close_handler(t *testing.T) {
+	temper.Covers(t, "router")
 	testID := watermill.NewUUID()
 	subscribeTopic1 := "test_topic_1_" + testID
 	subscribeTopic2 := "test_topic_2_" + testID
@@ -793,6 +802,7 @@ func (p *failingPublisherMock) Publish(topic string, messages ...*message.Messag
 func (p *failingPublisherMock) Close() error { return nil }
 
 func TestRouter_stop_when_all_handlers_stopped(t *testing.T) {
+	temper.Covers(t, "router")
 	pub1, sub1 := createPubSub()
 	pub2, sub2 := createPubSub()
 
@@ -1225,6 +1235,8 @@ func TestRouter_Handlers(t *testing.T) {
 }
 
 func TestRouter_wait_for_handlers_before_shutdown(t *testing.T) {
+	temper.Covers(t, "router")
+	temper.Covers(t, "shutdown.router_waits_for_inflight", temper.Subject("pubsub.gochannel"))
 	t.Parallel()
 
 	pub, sub := createPubSub()
@@ -1279,6 +1291,8 @@ func TestRouter_wait_for_handlers_before_shutdown(t *testing.T) {
 }
 
 func TestRouter_wait_for_handlers_before_shutdown_timeout(t *testing.T) {
+	temper.Covers(t, "router")
+	temper.Covers(t, "shutdown.router_waits_for_inflight", temper.Subject("pubsub.gochannel"))
 	t.Parallel()
 
 	pub, sub := createPubSub()

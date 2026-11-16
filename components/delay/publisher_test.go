@@ -3,6 +3,7 @@ package delay_test
 import (
 	"context"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -15,6 +16,7 @@ import (
 )
 
 func TestPublisher(t *testing.T) {
+	temper.Covers(t, "component.delay")
 	pubSub := gochannel.NewGoChannel(gochannel.Config{}, nil)
 
 	messages, err := pubSub.Subscribe(context.Background(), "test")

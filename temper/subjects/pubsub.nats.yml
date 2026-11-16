@@ -1,0 +1,12 @@
+id: pubsub.nats
+kind: pubsub
+feature: pubsub.nats
+answers:
+  pubsub.features:
+    consumer_groups: supported
+    exactly_once: supported
+    guaranteed_order: supported
+    guaranteed_order_single_subscriber: supported
+    persistent: supported
+    new_subscriber_receives_old_messages: supported
+    context_preserved: {unsupported: true, reason: "declared false in tests.Features; no test proves it", tracked_by: "unproven"}

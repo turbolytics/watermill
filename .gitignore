@@ -9,3 +9,5 @@ docs/hugo_stats.json
 *.out
 *.log
 .mod-cache
+
+/.temper/

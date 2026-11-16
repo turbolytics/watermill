@@ -3,6 +3,7 @@ package middleware_test
 import (
 	"context"
 	stdErrors "errors"
+	"github.com/turbolytics/temper"
 	"testing"
 	"time"
 
@@ -60,6 +61,7 @@ func TestPoisonQueue_handler_ok(t *testing.T) {
 }
 
 func TestPoisonQueue_handler_failing(t *testing.T) {
+	temper.Covers(t, "middleware.poison_queue")
 	poisonPublisher := mockPublisher{behaviour: BehaviourAlwaysOK}
 
 	poisonQueue, err := middleware.PoisonQueue(&poisonPublisher, topic)

@@ -1,6 +1,7 @@
 package middleware_test
 
 import (
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/ThreeDotsLabs/watermill/message"
@@ -10,6 +11,7 @@ import (
 )
 
 func TestIgnoreErrors_Middleware(t *testing.T) {
+	temper.Covers(t, "middleware.ignore_errors")
 	testCases := []struct {
 		Name            string
 		IgnoredErrors   []error

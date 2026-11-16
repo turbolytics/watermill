@@ -2,6 +2,7 @@ package cqrs_test
 
 import (
 	"context"
+	"github.com/turbolytics/temper"
 	"sync"
 	"testing"
 	"time"
@@ -17,6 +18,7 @@ import (
 
 // TestCQRS is functional test of CQRS command handler and event handler.
 func TestCQRS(t *testing.T) {
+	temper.Covers(t, "component.cqrs")
 	testCases := []struct {
 		Name       string
 		CreateCqrs func(t *testing.T, cc *CaptureCommandHandler, ce *CaptureEventHandler) (*message.Router, *cqrs.CommandBus, *cqrs.EventBus)

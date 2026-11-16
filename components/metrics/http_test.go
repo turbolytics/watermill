@@ -1,6 +1,7 @@
 package metrics_test
 
 import (
+	"github.com/turbolytics/temper"
 	"net/http"
 	"testing"
 	"time"
@@ -13,6 +14,7 @@ import (
 )
 
 func TestCreateRegistryAndServeHTTP_metrics_endpoint(t *testing.T) {
+	temper.Covers(t, "component.metrics")
 	reg, cancel := metrics.CreateRegistryAndServeHTTP(":8090")
 	defer cancel()
 	err := reg.Register(collectors.NewBuildInfoCollector())

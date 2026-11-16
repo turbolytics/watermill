@@ -1,6 +1,7 @@
 package middleware_test
 
 import (
+	"github.com/turbolytics/temper"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -11,6 +12,7 @@ import (
 )
 
 func TestRecoverer_Panic(t *testing.T) {
+	temper.Covers(t, "middleware.recoverer")
 	h := middleware.Recoverer(func(msg *message.Message) (messages []*message.Message, e error) {
 		panic("foo")
 	})

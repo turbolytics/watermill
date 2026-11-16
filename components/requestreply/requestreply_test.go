@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"sync"
 	"testing"
 	"time"
@@ -489,6 +490,7 @@ func TestRequestReply_timeout(t *testing.T) {
 }
 
 func TestRequestReply_context_cancellation(t *testing.T) {
+	temper.Covers(t, "component.requestreply")
 	ts := NewTestServices[struct{}](t, TestServicesConfig{})
 
 	err := ts.CommandProcessor.AddHandlers(

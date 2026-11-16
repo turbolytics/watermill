@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/turbolytics/temper"
 	"strconv"
 	"sync"
 	"testing"
@@ -19,6 +20,7 @@ import (
 )
 
 func TestRequeue(t *testing.T) {
+	temper.Covers(t, "component.requeuer")
 	logger := watermill.NewStdLogger(false, false)
 
 	pubSub := gochannel.NewGoChannel(gochannel.Config{}, logger)
